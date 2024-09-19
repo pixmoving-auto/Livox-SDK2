@@ -31,6 +31,7 @@
 #include <functional>
 #include <vector>
 #include <atomic>
+#include <stdint.h>
 
 #include "livox_lidar_def.h"
 
