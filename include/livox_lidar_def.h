@@ -31,9 +31,9 @@
 
 #pragma pack(1)
 
-#define LIVOX_LIDAR_SDK_MAJOR_VERSION       3
-#define LIVOX_LIDAR_SDK_MINOR_VERSION       1
-#define LIVOX_LIDAR_SDK_PATCH_VERSION       1
+#define LIVOX_LIDAR_SDK_MAJOR_VERSION       1
+#define LIVOX_LIDAR_SDK_MINOR_VERSION       2
+#define LIVOX_LIDAR_SDK_PATCH_VERSION       5
 
 #define kBroadcastCodeSize 16
 
@@ -90,6 +90,7 @@ typedef enum {
   kKeyFovCfgEn                = 0x0017,
   kKeyDetectMode              = 0x0018,
   kKeyFuncIoCfg               = 0x0019,
+  kKeyWorkModeAfterBoot       = 0x0020,
   kKeyWorkMode                = 0x001A,
   kKeyGlassHeat               = 0x001B,
   kKeyImuDataEn               = 0x001C,
@@ -116,6 +117,7 @@ typedef enum {
   kKeyLidarFlashStatus        = 0x800F,
   kKeyFwType                  = 0x8010,
   kKeyHmsCode                 = 0x8011,
+  kKeyCurGlassHeatState       = 0x8012,
   
   kKeyRoiMode                 = 0xFFFE,
   kKeyLidarDiagInfoQuery      = 0xFFFF
@@ -135,6 +137,20 @@ typedef struct {
   uint8_t timestamp[8];
   uint8_t data[1];             /**< Point cloud data. */
 } LivoxLidarEthernetPacket;
+
+typedef struct {
+  uint8_t  sof;
+  uint8_t  version;
+  uint16_t length;
+  uint32_t seq_num;
+  uint16_t cmd_id;
+  uint8_t  cmd_type;
+  uint8_t  sender_type;
+  char     rsvd[6];
+  uint16_t crc16_h;
+  uint32_t crc32_d;
+  uint8_t  data[1];
+} LivoxLidarCmdPacket;
 
 typedef struct {
   float gyro_x;
@@ -239,6 +255,12 @@ typedef enum {
   kLivoxLidarMotorStoping = 0x07,
   kLivoxLidarUpgrade = 0x08
 } LivoxLidarWorkMode;
+
+typedef enum {
+  kLivoxLidarWorkModeAfterBootDefault = 0x00,
+  kLivoxLidarWorkModeAfterBootNormal = 0x01,
+  kLivoxLidarWorkModeAfterBootWakeUp = 0x02
+} LivoxLidarWorkModeAfterBoot;
 
 typedef struct {
   float roll_deg;
@@ -449,6 +471,10 @@ typedef struct {
   uint8_t progress;
 } LivoxLidarUpgradeState;
 
+typedef struct {
+  uint8_t ret; // succ: 0, fail: 1
+} LivoxLidarRmcSyncTimeResponse;
+
 #pragma pack()
 
 /**
@@ -459,6 +485,14 @@ typedef struct {
  * @param client_data            user data associated with the command.
  */
 typedef void (*LivoxLidarPointCloudCallBack)(const uint32_t handle, const uint8_t dev_type, LivoxLidarEthernetPacket* data, void* client_data);
+
+/**
+ * Callback function for receiving point cloud data.
+ * @param handle                 device handle.
+ * @param data                   device's command data.
+ * @param client_data            user data associated with the command.
+ */
+typedef void (*LivoxLidarCmdObserverCallBack)(const uint32_t handle, const LivoxLidarCmdPacket* data, void* client_data);
 
 /**
  * Callback function for point cloud observer.
@@ -533,5 +567,14 @@ typedef void (*LivoxLidarLoggerCallback)(livox_status status, uint32_t handle,
 typedef void (*LivoxLidarRebootCallback)(livox_status status, uint32_t handle, LivoxLidarRebootResponse* response, void* client_data);
 
 typedef void (*OnLivoxLidarUpgradeProgressCallback)(uint32_t handle, LivoxLidarUpgradeState state, void *client_data);
+
+/**
+ * Callback function for receiving point cloud data.
+ * @param status                 status info.
+ * @param handle                 device handle.
+ * @param data                   device's command data.
+ * @param client_data            user data associated with the command.
+ */
+typedef void (*LivoxLidarRmcSyncTimeCallBack)(livox_status status, uint32_t handle, LivoxLidarRmcSyncTimeResponse* data, void* client_data);
 
 #endif  // LIVOX_LIDAR_DEF_H_

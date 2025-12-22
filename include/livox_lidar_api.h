@@ -64,6 +64,18 @@ void LivoxLidarSdkUninit();
 void SetLivoxLidarPointCloudCallBack(LivoxLidarPointCloudCallBack cb, void* client_data);
 
 /**
+ * Add the lidar command data observer.
+ * @param handle                 device handle.
+ * @param client_data            user data associated with the command.
+ */
+void LivoxLidarAddCmdObserver(LivoxLidarCmdObserverCallBack cb, void* client_data);
+
+/**
+ * Remove the lidar command data observer.
+ */
+void LivoxLidarRemoveCmdObserver();
+
+/**
  * Set the point cloud observer.
  * @param cb                     callback to receive Status Info.
  * @param client_data            user data associated with the command.
@@ -423,6 +435,26 @@ livox_status LivoxLidarStopLogger(const uint32_t handle, const LivoxLidarLogType
  */
 livox_status SetLivoxLidarDebugPointCloud(uint32_t handle, bool enable, LivoxLidarLoggerCallback cb, void* client_data);
 
+/**
+ * Set LiDAR GPS "GPRMC" string to synchronize the time.
+ * @param  handle                           device handle.
+ * @param  rmc                              GPS "GPRMC" string.
+ * @param  rmc_length                       GPS "GPRMC" string length.
+ * @param  cb                               callback for the command.
+ * @param  client_data                      user data associated with the command.
+ * @return kStatusSuccess on successful return, see \ref LivoxStatus for other error codes.
+ */
+livox_status SetLivoxLidarRmcSyncTime(uint32_t handle, const char* rmc, uint16_t rmc_length, LivoxLidarRmcSyncTimeCallBack cb, void* client_data);
+
+/**
+ * Set LiDAR work mode after boot.
+ * @param  handle                 device handle.
+ * @param  work_mode              lidar work mode after boot.
+ * @param  cb                     callback for the command.
+ * @param  client_data            user data associated with the command.
+ * @return kStatusSuccess on successful return, see \ref LivoxStatus for other error code.
+ */
+livox_status SetLivoxLidarWorkModeAfterBoot(const uint32_t handle,const LivoxLidarWorkModeAfterBoot work_mode, LivoxLidarAsyncControlCallback cb, void* client_data);
 /*******Upgrade Module***********/
 
 /**

@@ -181,6 +181,7 @@ static const uint16_t kHAPPushMsgPort   = 56000;
 static const uint16_t kHAPPointDataPort = 57000;
 static const uint16_t kHAPIMUPort       = 58000;
 static const uint16_t kHAPLogPort       = 59000;
+static const uint16_t kHAPDebugPointCloudPort = 60000;
 
 /** kLogPort, which is the log port to be banned. */
 static const uint16_t kLogPort = 0;
@@ -336,6 +337,13 @@ typedef struct {
   uint16_t  host_port;
   uint16_t  bandwidth;
 } LivoxLidarDebugPointCloudRequest;
+
+typedef struct {
+  enum class SyncTimeType : std::uint8_t {
+    kRmcSyncTime = 2,
+  } type;
+  uint64_t ns;
+} LivoxLidarRmcSyncTimeRequest;
 
 typedef void(*LivoxLidarStartUpgradeCallback)(livox_status status, uint32_t handle,
     LivoxLidarStartUpgradeResponse* response, void* client_data);

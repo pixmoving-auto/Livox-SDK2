@@ -1,6 +1,22 @@
 # Changelog
 
 All notable changes to Livox-SDK2 will be documentd in this file.
+## [1.2.5]
+### Added
+
+- Support saving debug point cloud of Hap.
+- Support setting the default work mode after boot of Hap.
+
+## [1.2.4]
+### Added
+
+- Support Mid-360 GPS time synchronization.
+
+## [1.2.3]
+### Added
+
+- Support to get CMD packet data;
+- Support full info keys of HAP. 
 
 ## [1.2.2]
 ### Added

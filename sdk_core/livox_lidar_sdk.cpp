@@ -147,6 +147,14 @@ void SetLivoxLidarPointCloudCallBack(LivoxLidarPointCloudCallBack cb, void *clie
   DataHandler::GetInstance().SetPointDataCallback(cb, client_data);
 }
 
+void LivoxLidarAddCmdObserver(LivoxLidarCmdObserverCallBack cb, void *client_data) {
+  GeneralCommandHandler::GetInstance().LivoxLidarAddCmdObserver(cb, client_data);
+}
+
+void LivoxLidarRemoveCmdObserver() {
+  GeneralCommandHandler::GetInstance().LivoxLidarRemoveCmdObserver();
+}
+
 void SetLivoxLidarImuDataCallback(LivoxLidarImuDataCallback cb, void* client_data) {
   DataHandler::GetInstance().SetImuDataCallback(cb, client_data);
 }
@@ -284,6 +292,14 @@ livox_status DisableLivoxLidarFusaFunciont(uint32_t handle, LivoxLidarAsyncContr
 
 livox_status SetLivoxLidarDebugPointCloud(uint32_t handle, bool enable, LivoxLidarLoggerCallback cb, void* client_data) {
   return CommandImpl::SetLivoxLidarDebugPointCloud(handle, enable, cb, client_data);
+}
+
+livox_status SetLivoxLidarRmcSyncTime(uint32_t handle, const char* rmc, uint16_t rmc_length, LivoxLidarRmcSyncTimeCallBack cb, void* client_data) {
+  return CommandImpl::SetLivoxLidarRmcSyncTime(handle, rmc, rmc_length, cb, client_data);
+}
+
+livox_status SetLivoxLidarWorkModeAfterBoot(const uint32_t handle,const LivoxLidarWorkModeAfterBoot work_mode, LivoxLidarAsyncControlCallback cb, void* client_data){
+  return CommandImpl::SetLivoxLidarWorkModeAfterBoot(handle, work_mode, cb, client_data);
 }
 
 // reset lidar
