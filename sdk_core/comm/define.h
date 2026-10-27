@@ -25,6 +25,7 @@
 #ifndef LIVOX_DEFINE_H_
 #define LIVOX_DEFINE_H_
 
+#include <cstdint>
 #include <stdio.h>
 #include <string>
 #include <memory>
