@@ -404,7 +404,15 @@ void basic_buffer<T>::append(const U *begin, const U *end) {
 // type in this mode. If this is the case __cpp_char8_t will be defined.
 #if !defined(__cpp_char8_t)
 // A UTF-8 code unit type.
+// GCC 13 warns about this legacy type even before C++20.
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ >= 13
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wc++20-compat"
+#endif
 enum char8_t: unsigned char {};
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ >= 13
+# pragma GCC diagnostic pop
+#endif
 #endif
 
 // A UTF-8 string view.
